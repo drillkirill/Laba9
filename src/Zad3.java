@@ -1,128 +1,126 @@
+import java.util.Objects;
 import java.util.Scanner;
+
 
 public class Zad3 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите последовательность символов: ");
-        char[] chars = scanner.nextLine().toCharArray();
-
-        // а) Определить количество цифр
-        int digitsCount = 0;
-        for (char ch : chars) {
-            if (Character.isDigit(ch)) {
-                digitsCount++;
+        Scanner mc = new Scanner(System.in);
+        System.out.println("Сколько символов?");
+        int n = mc.nextInt();
+        String[] mas = new String[n];
+        System.out.println("Заполните массив");
+        for (int i = 0; i < n; i++) {
+            mas[i] = mc.next();
+            while (mas[i].length() != 1) {
+                System.out.println("Вводи массив по одному!!!");
+                mas[i] = mc.next();
             }
         }
-        System.out.println("Количество цифр: " + digitsCount);
-
-        // б) Выяснить, входит ли в последовательность символ, введенный с клавиатуры,
-        //    если входит, то посчитать сколько раз.
-        System.out.print("Введите символ для поиска: ");
-        char searchChar = scanner.nextLine().charAt(0);
-        int searchCount = 0;
-        for (char ch : chars) {
-            if (ch == searchChar) {
-                searchCount++;
+        System.out.println("Введите любое число и я скажу, сколько раз оно входит в последовательность");
+        String chisB = mc.next();
+        System.out.println("Введи число и я скажу, все ли цифры числа входят в последовательность");
+        String chisV = mc.next();
+        int cntCifr = 0, cntV = 0;
+        for (int i = 0; i < n; i++) {
+            if (equa(mas[i])) {
+                cntCifr++;
             }
         }
-        if (searchCount == 0) {
-            System.out.println("Символ не найден.");
-        } else
-            System.out.println("Символ найден " + searchCount + " раз.");
-
-        // в) Выяснить, верно ли, что среди символов имеются все цифры,
-        // входящие в цифру, введенную с клавиатуры, например 70293.
-        Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Введите число для проверки: ");
-        String digit = scanner1.nextLine();
-
-        // Переводим введенную цифру в массив символов
-        char[] digitChars = digit.toCharArray();
-
-        // Создаем массив для хранения флагов вхождения цифры в массив символов
-        boolean[] digitExists = new boolean[10];
-
-        // Проходим по массиву символов и устанавливаем флаги вхождения цифр
-        for (char ch : digitChars) {
-            if (Character.isDigit(ch)) {
-                digitExists[ch - '0'] = true;
+        System.out.println("Кол-во цифр " + cntCifr + " Кол-во чисел 'Б' = " + count(String.join("", mas), chisB));
+        for (int i = 0; i < chisV.length(); i++) {
+            if (cifriVchis(String.join("", mas), chisV)) {
+                cntV++;
             }
         }
+        if (cntV == chisV.length()) {
+            System.out.println("Все цифры присутствуют в последовательности В");
+        } else System.out.println("Не все числа присутствуют в последовательности В");
 
-        // Проверяем, что все цифры входят в массив символов
-        boolean isAllDigitsExists = true;
-        for (int i = 0; i < digitExists.length; i++) {
-            if (digitExists[i] == false) {
-                isAllDigitsExists = false;
-                break;
+        int cnt = 0;            //Задание Г
+        for (int i = 0; i < mas.length - 1; i++) {
+            if (Objects.equals(mas[i], "{") & Objects.equals(mas[i + 1], "}")) {
+                System.out.println("{,} присутствует в последовательности");
+            }
+            if (Objects.equals(mas[i], "(") & Objects.equals(mas[i + 1], ")")) {
+                System.out.println("(,) присутствует в последовательности");
+            }
+            if (Objects.equals(mas[i], "[") & Objects.equals(mas[i + 1], "]")) {
+                System.out.println("[,] присутствует в последовательности");
+            }
+            if ((Objects.equals(mas[i], "[") & Objects.equals(mas[i + 1], "}")) ||
+                    Objects.equals(mas[i], "(") & Objects.equals(mas[i + 1], "}") ||
+                    Objects.equals(mas[i], "[") & Objects.equals(mas[i + 1], ")") ||
+                    Objects.equals(mas[i], "{") & Objects.equals(mas[i + 1], ")") ||
+                    Objects.equals(mas[i], "(") & Objects.equals(mas[i + 1], "]") ||
+                    Objects.equals(mas[i], "{") & Objects.equals(mas[i + 1], "]")) {
+                cnt++;
             }
         }
-        // Выводим результат
-        if (isAllDigitsExists) {
-            System.out.println("Массив содержит все цифры из введенного числа.");
+        if (cnt > 0) {
+            System.out.println("Есть закрытые скобки других сочетаний 'Г' и их " + cnt);
         } else {
-            System.out.println("Массив не содержит все цифры из введенного числа.");
+            System.out.println("Закрытых скобок других сочетаний нет 'Г' ");
         }
-        // г( Выяснить, имеется ли среди символов пара соседствующих скобок «(, ), {, }, [, ]»
-        // если скобки присутствуют в последовательности,
-        // то выяснить есть ли закрытые пары разного сочетания и вывести ответ.
-
-
-        // Проверяем, есть ли скобки в последовательности
-        boolean hasBrackets = false;
-        for (int i = 0; i < digit.length(); i++) {
-            char ch = digit.charAt(i);
-            if (ch == '(' || ch == ')' || ch == '{' || ch == '}' || ch == '[' || ch == ']') {
-                hasBrackets = true;
-                break;
+        //Задание Д
+        int cnt1 = 0;
+        for (int i = 0; i < mas.length - 1; i++) {
+            if (equal(mas, i) & (Objects.equals(mas[i], mas[i + 1]))) {
+                cnt1++;
             }
         }
-
-        if (!hasBrackets) {
-            System.out.println("Последовательность не содержит скобок.");
-            return;
+        if (cnt1 > 0) {
+            System.out.println("Присутствуют соседствующие знаки препинания 'Д', их " + cnt1);
+        } else {
+            System.out.println("Нет соседствующих знаков препинания 'Д' ");
         }
-
-        // Проверяем, есть ли пара соседствующих скобок
-        boolean hasPairedBrackets = false;
-        int length = digit.length();
-        for (int i = 0; i < length - 1; i++) {
-            char ch = digit.charAt(i);
-            char nextCh = digit.charAt(i + 1);
-            if (ch == '(' && nextCh == ')' || ch == '{' && nextCh == '}' || ch == '[' && nextCh == ']') {
-                hasPairedBrackets = true;
-                break;
-            }
-        }
-
-        if (!hasPairedBrackets) {
-            System.out.println("Последовательность не содержит пары соседствующих скобок.");
-            return;
-        }
-
-        // Проверяем, есть ли закрытые пары разного сочетания
-        boolean hasDifferentPairs = false;
-        for (int i = 0; i < length - 1; i++) {
-            char ch = digit.charAt(i);
-            for (int j = i + 1; j < length; j++) {
-                char nextCh = digit.charAt(j);
-                if ((ch == '(' && nextCh == ')') || (ch == '{' && nextCh == '}') ||
-                        (ch == '[' && nextCh == ']')) {
-                    hasDifferentPairs = true;
-                    break;
+        int cnt2 = 0;     //E
+        for (int i = 0; i < mas.length - 2; i++) {
+            for (int j = i + 1; j < mas.length - 1; j++) {
+                if (equa(mas[i]) & equa(mas[i + 1]) & equa(mas[j]) & equa(mas[j + 1])) {
+                    if (Integer.parseInt(mas[i]) + 1 == Integer.parseInt(mas[i + 1]) & Integer.parseInt(mas[j]) - 1 ==Integer.parseInt(mas[j + 1])) {
+                        cnt2++;
+                    }
                 }
             }
-            if (hasDifferentPairs) {
-                break;
-            }
         }
-
-        // Выводим результат
-        if (hasDifferentPairs) {
-            System.out.println("Последовательность содержит закрытые пары разного сочетания скобок.");
+        if (cnt > 0) {
+            System.out.println("Такие последовательности есть 'Е' " + cnt2);
         } else {
-            System.out.println("Последовательность не содержит закрытых пар разного сочетания скобок.");
+            System.out.println("Такие последовательностей нет 'Е' ");
         }
     }
+    private static boolean equa(String m) {
+        if (m == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(m);
+        }
+        catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+    private static boolean equal(String[] x, int n) {
+        if (!Objects.equals(x[n], ".")||!Objects.equals(x[n], ",")||!Objects.equals(x[n], "!")||!Objects.equals(x[n], "?")) {
+            return true;
+        }
+        return false;
+    }
+    public static int count(String str, String target) {
+        return (str.length() - str.replace(target, "").length()) / target.length();
+    }
+    public static boolean cifriVchis(String x, String n){
+        for(int i=0;i<n.length();i++) {
+            for (int j = 0; j < x.length(); j++) {
+                if (x.charAt(j) == n.charAt(i)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static String numb(String [] m,int n){
+        return m[n];
+    }
 }
-

@@ -1,37 +1,53 @@
+import java.util.Objects;
+import java.util.Scanner;
+import  java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Zad12 {
     public static void main(String[] args) {
-
-        String[] letter = {
-                "Эй, депутатик! Я дед, пишу тебе не первый раз.",
-                "Значит так, будем говорить о твоей работе.",
-                "Короче, я тут смотрю по телевизору новости,",
-                "и видимо, ты как-то умудрился с этим ФЗ-230 связаться.",
-                "Типа, ты его написал, а там половина слов не те,",
-                "что нужно. Ну короче, мужчинка, разберись уже!",
-                "Чтобы этого больше не происходило,",
-                "я думаю, ты должен провести курсы повышения квалификации."};
-
-        String[] duplicates = {" +", " +", " +", " +"};
-        String[] parasites = {"будем говорить", "ну", "значит так", "короче", "типа"};
-        String[] substitutions = {"Алексей Геннадьевич", "Алексей Геннадьевич", "Алексей Геннадьевич", "Алексей Геннадьевич"};
-        String[] wrongAddressings = {"эй", "депутатик", "мужчинка", "сынок"};
-
-        for (String line : letter) {
-            String correctedLine = line;
-            for (int i = 0; i < duplicates.length; i++) {
-                correctedLine = correctedLine.replaceAll(duplicates[i], " ");
+        Scanner mc =new Scanner(System.in);
+        System.out.println("Когда закончите ввод, перейдите на след..строку и введите 'END'");
+        while (mc.hasNextLine()) {
+            StringBuilder str = new StringBuilder();
+            String line = mc.nextLine();
+            if (!line.equals("END")) {
+                str.append(line).append(System.lineSeparator());
+                System.out.println(String.valueOf(str).replaceAll("(\\r|\\n)", ""));
             }
-            for (int i = 0; i < parasites.length; i++) {
-                correctedLine = correctedLine.replaceAll("\\b" + parasites[i] + "\\b", "").trim();
+            else{break;}
+            String m = String.valueOf(str);
+            String [] mas={"эй","депутатик","мужчинка", "сынок","эй ","депутатик ","мужчинка ", "сынок ",
+                    "ну ","будем говорить ","значит так ","короче ","типа ","будем говорить","значит так",
+                    "короче","типа","\\s+\\s+"};
+            for(int i =0;i<mas.length;i++){
+                Pattern q1=Pattern.compile(numb(mas,i));
+                Matcher textDeda1 = q1.matcher(m);
+                while (textDeda1.find()) {
+                    if(i <= 7) {
+                        m = textDeda1.replaceAll("Алексей Генадьевич");}
+                    else if (i > 7 || i <= 16) {
+                        m= textDeda1.replaceAll("");
+                    } else if (i==17){m= textDeda1.replaceAll(" ");}
+                }
             }
-            for (int i = 0; i < substitutions.length; i++) {
-                correctedLine = correctedLine.replaceAll(substitutions[i], "Алексей Геннадьевич");
+            String[] pp = m.split(" ");
+            for (int j = 0;j < pp.length-2;j++){
+                if (Objects.equals(pp[j], pp[j + 1])){
+                    pp[j+1] ="";
+                }
+                else if (Objects.equals(pp[j], pp[j + 2])){
+                    pp[j+2]="";
+                }
             }
-            for (int i = 0; i < wrongAddressings.length; i++) {
-                correctedLine = correctedLine.replaceAll("\\b" + wrongAddressings[i] + "\\b", "Алексей Геннадьевич");
-            }
-            System.out.println(line);
-            System.out.println(correctedLine);
+            m= String.join(" ",pp);
+            Pattern q1=Pattern.compile(numb(mas,17));
+            Matcher textDeda1 = q1.matcher(m);
+            m= textDeda1.replaceAll(" ");
+            System.out.println(m);
+            System.out.println("");
         }
+    }
+    public static String numb(String [] m,int n){
+        return m[n];
     }
 }

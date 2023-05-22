@@ -1,57 +1,36 @@
+import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Scanner;
+
+import static java.lang.Math.pow;
 
 public class Zad2 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        // ввод троичного числа и проверка его корректности
-        String input;
-        do {
-            System.out.print("Введите троичное число (используйте только символы 0, 1 и 2): ");
-            input = scanner.nextLine();
-        } while (!isInputCorrect(input));
-
-        // перевод троичного числа в 10-ую систему счисления
-        int decimal = toDecimal(input);
-
-        // перевод 10-го числа в 12-ую систему счисления
-        String output = toBase12(decimal);
-
-        System.out.println(String.format("Введенное число %s (3) = %s (12)", input, output));
-    }
-
-    // проверка корректности ввода числа
-    private static boolean isInputCorrect(String input) {
-        for (char c : input.toCharArray()) {
-            if (c != '0' && c != '1' && c != '2') {
-                System.out.println("Ошибка! Используйте только символы 0, 1 и 2.");
-                return false;
+        Scanner mc = new Scanner(System.in);
+        System.out.println("Сколько элементов в вашем числе?");
+        int n= mc.nextInt();
+        String[] mch = new String[n];
+        StringBuilder m = new StringBuilder();
+        for (int i = 0; i < n;i++){
+            System.out.println("Введите число в 3-ой СС, (0,1,2)");
+            mch[i]= mc.next();
+            while ((!Objects.equals(mch[i], "0") || !Objects.equals(mch[i], "1") || !Objects.equals(mch[i], "2")) & mch[i].length()!=1){
+                System.out.println("Ввод неверен, ещё раз!");
+                mch[i]= mc.next();
+            }
+            m.append(mch[i]);
+        }
+        int x = 0,k=0;
+        while(k!=n){
+            for (int i = n-1;i >=0;i--){
+                x+=(Integer.parseInt(String.valueOf(m.charAt(i))))*pow(3,k);
+                k++;
             }
         }
-        return true;
-    }
-
-    // перевод троичного числа в 10-ую систему счисления
-    private static int toDecimal(String input) {
-        int decimal = 0;
-        int base = 1;
-        for (int i = input.length() - 1; i >= 0; i--) {
-            int digit = input.charAt(i) - '0';
-            decimal += digit * base;
-            base *= 3;
-        }
-        return decimal;
-    }
-
-    // перевод 10-го числа в 12-ую систему счисления
-    private static String toBase12(int decimal) {
-        StringBuilder output = new StringBuilder();
-        while (decimal > 0) {
-            int remainder = decimal % 12;
-            char digit = (char) (remainder < 10 ? '0' + remainder : 'A' + remainder - 10);
-            output.insert(0, digit);
-            decimal /= 12;
-        }
-        return output.toString();
+        String l = "" + x;
+        System.out.println("Ввод произведён успешно, переводим ваше число!");
+        BigInteger b =new BigInteger(new BigInteger(l).toString(12),10);
+        String o= ""+b;
+        System.out.println(o);
     }
 }

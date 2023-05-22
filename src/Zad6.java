@@ -2,52 +2,6 @@ import java.util.Objects;
 import java.util.Scanner;
 public class Zad6 {
     public static int count_parametr = 18;
-
-    public static void main(String[] args) {
-        Scanner mc = new Scanner(System.in);
-        int count_city;
-        int which_print;
-        System.out.println("Введите количество издательств, которые хотите заполнить:");
-        count_city = mc.nextInt();
-        String[][] TEXT = new String[count_city][count_parametr];
-        String[][] CONEC = new String[count_city][10];
-        System.out.println("Какой ввод будете использовать?" + "\n" +
-                "1) Регламентированный" + "\n" +
-                "2) Нерегламентированный");
-        which_print = mc.nextInt();
-        if (which_print == 1){System.out.println("Регламентированный ввод:");
-            for (int i = 0;i<count_city;i++){
-                for (int j=0;j<count_parametr;j++){
-                    print_text(j);
-                    reglam_print(i,j,TEXT);
-                }
-                find_information(TEXT);
-            }
-        }
-        if (which_print == 2) {
-            System.out.println("Нерегламентированный ввод, в конце введите 'END', разделитель ';':");
-            Scanner pi=new Scanner(System.in);
-            int i=0;
-            while (pi.hasNextLine()) {
-                StringBuilder str = new StringBuilder();
-                String line = pi.nextLine();
-                if (!line.equals("END")) {
-                    str.append(line).append(System.lineSeparator());
-                }
-                else {break;}
-                String [] mas;
-                mas = String.valueOf(str).split(";");
-                for (int j = 0; j < count_parametr; j++) {
-                    TEXT[i][j] = mas[j];
-                }
-                i++;
-            }
-            find_information(TEXT);
-        }
-        else {
-            System.out.println("Ввод не верен!!!!!!!!!!!!!, ВВЕДИ 1 или 2) ;))");
-        }
-    }
     public static void print_text(int i) {
         if (i == 0) {
             System.out.println("Введите страну:");
@@ -160,5 +114,59 @@ public class Zad6 {
         System.out.println("Количество изданий, основанных в [1970;2000] " + cntOsn);
         System.out.println("Количество изданий, имеющих хотя бы 1 собственный магазин и не менее 10 наград " + cntMagaz);
 
+    }
+
+    public static void main(String[] args) {
+        Scanner mc = new Scanner(System.in);
+        int count_city;
+        int which_print;
+        System.out.println("Введите количество издательств, которые хотите заполнить:");
+        count_city = mc.nextInt();
+        String[][] TEXT = new String[count_city][count_parametr];
+        String[][] CONEC = new String[count_city][10];
+        System.out.println("Какой ввод будете использовать?" + "\n" +
+                "1) Регламентированный" + "\n" +
+                "2) Нерегламентированный");
+        which_print = mc.nextInt();
+        if (which_print == 1){System.out.println("Регламентированный ввод:");
+            for (int i = 0;i<count_city;i++){
+                for (int j=0;j<count_parametr;j++){
+                    print_text(j);
+                    reglam_print(i,j,TEXT);
+                }
+                find_information(TEXT);
+            }
+        }
+        if (which_print == 2) {
+            System.out.println("Нерегламентированный ввод, в конце введите 'END' :");
+            Scanner pi=new Scanner(System.in);
+            int i=0;
+            while (pi.hasNextLine()) {
+                StringBuilder str = new StringBuilder();
+                String line = pi.nextLine();
+                if (!line.equals("END")) {
+                    str.append(line).append(System.lineSeparator());
+                }
+                else {break;}
+                String [] mas;
+                mas = String.valueOf(str).split(";");
+                for (int j = 0; j < count_parametr; j++) {
+                    TEXT[i][j] = mas[j];
+                }
+                i++;
+            }
+            find_information(TEXT);
+        }
+        else {
+            System.out.println("Ввод не верен!!!!!!!!!!!!!, ВВЕДИ 1 или 2) ;))");
+        }
+    }
+    public static void printmas(String[][] ms) {
+        for (int i = 0; i < ms.length; i++) {
+            for (int j = 0; j < ms[0].length; j++) {
+                System.out.print(ms[i][j] + "\t");
+            }
+            System.out.println();
+        }
     }
 }

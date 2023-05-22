@@ -1,24 +1,23 @@
 import java.util.Scanner;
 
+import java.util.Scanner;
 public class Zad5 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Введите текст: ");
-        String text = scanner.nextLine();
-
-        System.out.println("Введите слово: ");
-        String word = scanner.nextLine();
-
-
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (word.indexOf(c) != -1) {
-                int index = word.indexOf(c) + 1;
-                System.out.print(index);
-            } else {
-                System.out.print(c);
+        Scanner mc = new Scanner(System.in);
+        System.out.println("Введите текст");
+        String text = mc.nextLine();
+        System.out.println("Введите слово");
+        String word = mc.nextLine();
+        int cntBUKV=0;
+        for (int i=0;i<text.length();i++){
+            for(int j=0;j<word.length();j++){
+                if (text.toCharArray()[i]==word.toCharArray()[j]){
+                    cntBUKV++;
+                    String m = String.valueOf(text.charAt(i));
+                    text=text.replace(m, Integer.toString(j));
+                }
             }
         }
+        System.out.println(cntBUKV+" раз встречалась буква, текст--- "+text);
     }
 }
